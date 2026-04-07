@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('estudiantes.estudiante')
+@Entity({ schema: 'estudiantes', name: 'estudiante' })
 export class Estudiante {
   @PrimaryGeneratedColumn('increment')
   id?: number;
@@ -34,4 +34,6 @@ export class Estudiante {
 
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
+
+  //Relations
 }
