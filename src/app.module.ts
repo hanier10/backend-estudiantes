@@ -2,9 +2,18 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EstudiantesModule } from './modules/estudiantes/estudiantes.module';
+import { DatabaseModule } from './database/database.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [EstudiantesModule],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+      isGlobal: true,
+    }),
+    EstudiantesModule,
+    DatabaseModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
