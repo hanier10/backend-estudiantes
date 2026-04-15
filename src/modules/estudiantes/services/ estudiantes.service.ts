@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Estudiante } from '../entities/estudiante.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -21,8 +21,14 @@ export class EstudiantesService {
     return await rows.getMany();
   }
 
-  getOne(id: number) {
-    return `Esto retorna el id ${id}`;
+  async getOne(id: number) {
+    const row = await this.estudianteRepo.find({ where: { id } });
+
+    if (!row) {
+      throw new NotFoundException(`No se encuentra el registro ${id}`);
+    }
+
+    return row;
   }
 
   async create(estudianteDto: CreateEstudianteDto) {

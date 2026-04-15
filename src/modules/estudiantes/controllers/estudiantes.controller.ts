@@ -19,8 +19,8 @@ export class EstudiantesController {
     return datos;
   }
 
-  @Get(':id')
-  getOne(@Param('id', ParseIntPipe) id: number) {
+  @MessagePattern({ cmd: 'get_one_student' })
+  getOne(@Payload(ParseIntPipe) id: number) {
     return this.estudianteService.getOne(id);
   }
 
