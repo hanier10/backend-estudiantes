@@ -7,9 +7,16 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 export class EstudiantesController {
   constructor(private readonly estudianteService: EstudiantesService) {}
 
-  @Get()
-  getAll() {
-    return this.estudianteService.getAll();
+  @MessagePattern({ cmd: 'get_all_student' })
+  async getAll() {
+    const rows = await this.estudianteService.getAll();
+
+    const datos = {
+      data: rows,
+      count: rows.length,
+    };
+
+    return datos;
   }
 
   @Get(':id')
@@ -17,7 +24,6 @@ export class EstudiantesController {
     return this.estudianteService.getOne(id);
   }
 
-  // @Post()
   @MessagePattern({ cmd: 'create_student' })
   async create(@Payload() estudianteDto: CreateEstudianteDto) {
     const estudiante = await this.estudianteService.create(estudianteDto);

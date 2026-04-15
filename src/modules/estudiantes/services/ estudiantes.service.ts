@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Estudiante } from '../entities/estudiante.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateEstudianteDto } from '../dto/estudiante.dto';
 
 @Injectable()
@@ -9,10 +9,16 @@ export class EstudiantesService {
   constructor(
     @InjectRepository(Estudiante)
     private readonly estudianteRepo: Repository<Estudiante>,
+    private readonly dataSource: DataSource,
   ) {}
 
-  getAll() {
-    return `Endpoint para getAll`;
+  async getAll() {
+    const rows = this.dataSource
+      .getRepository(Estudiante)
+      .createQueryBuilder('estudiantes')
+      .where('estudiantes.id is not null');
+
+    return await rows.getMany();
   }
 
   getOne(id: number) {
