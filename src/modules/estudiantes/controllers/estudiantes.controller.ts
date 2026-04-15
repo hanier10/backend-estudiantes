@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, ParseIntPipe } from '@nestjs/common';
 import { EstudiantesService } from '../services/ estudiantes.service';
 import { CreateEstudianteDto } from '../dto/estudiante.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
@@ -34,5 +34,10 @@ export class EstudiantesController {
     };
 
     return datos;
+  }
+
+  @MessagePattern({ cmd: 'remove_student' })
+  remove(@Payload(ParseIntPipe) id: number, payload: CreateEstudianteDto) {
+    return this.estudianteService.delete(id, payload);
   }
 }

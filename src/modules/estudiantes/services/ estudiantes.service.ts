@@ -22,7 +22,7 @@ export class EstudiantesService {
   }
 
   async getOne(id: number) {
-    const row = await this.estudianteRepo.find({ where: { id } });
+    const row = await this.estudianteRepo.findOne({ where: { id: id } });
 
     if (!row) {
       throw new NotFoundException(`No se encuentra el registro ${id}`);
@@ -39,5 +39,17 @@ export class EstudiantesService {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async delete(id: number, payload: CreateEstudianteDto) {
+    const row = await this.getOne(id);
+
+    const mergeData = this.estudianteRepo.merge(row, payload);
+
+    const updateData = await this.estudianteRepo.save(mergeData);
+
+    await this.estudianteRepo.remove(updateData);
+
+    return row;
   }
 }
