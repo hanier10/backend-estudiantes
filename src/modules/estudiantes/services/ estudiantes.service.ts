@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Estudiante } from '../entities/estudiante.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -22,13 +22,23 @@ export class EstudiantesService {
   }
 
   async getOne(id: number) {
-    const row = await this.estudianteRepo.findOne({ where: { id: id } });
+    try {
+      const row = await this.dataSource
+        .getRepository(Estudiante)
+        .createQueryBuilder('estudiante')
+        .leftJoinAndSelect('estudiante.etnia', 'etnia')
+        .leftJoinAndSelect('estudiante.sexo', 'sexo')
+        .where('estudiante.id = :id', { id })
+        .getOne();
 
-    if (!row) {
-      throw new NotFoundException(`No se encuentra el registro ${id}`);
+      if (!row) {
+        throw new Error(`No existe el id ${id}`);
+      }
+
+      return row;
+    } catch (error) {
+      console.log(error);
     }
-
-    return row;
   }
 
   async create(estudianteDto: CreateEstudianteDto) {
@@ -42,7 +52,11 @@ export class EstudiantesService {
   }
 
   async delete(id: number, payload: CreateEstudianteDto) {
-    const row = await this.getOne(id);
+    const row = await this.estudianteRepo.findOne({ where: { id } });
+
+    if (!row) {
+      throw new Error(`No existe el id ${id}`);
+    }
 
     const mergeData = this.estudianteRepo.merge(row, payload);
 

@@ -1,7 +1,10 @@
+import { Etnia, Sexo } from 'src/modules/relaciones/entities';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -36,4 +39,12 @@ export class Estudiante {
   updated_at: Date;
 
   //Relations
+
+  @ManyToOne(() => Etnia)
+  @JoinColumn({ name: 'etnia_id', referencedColumnName: 'id' })
+  etnia: Etnia;
+
+  @ManyToOne(() => Sexo)
+  @JoinColumn({ name: 'sexo_id', referencedColumnName: 'id' })
+  sexo: Sexo;
 }
