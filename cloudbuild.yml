@@ -8,7 +8,7 @@ steps:
         '-f',
         'backend-estudiantes/Dockerfile.prod',
         '--platform=linux/amd64',
-        'backend-estudiantes',
+        '.',
       ]
   - name: 'gcr.io/cloud-builders/docker'
     args:
@@ -16,5 +16,3 @@ steps:
         'push',
         'us-central1-docker.pkg.dev/microservices-academy/images-steve/backend-estudiantes',
       ]
-    options:
-    loggin: CLOUD_LOGGING_ONLY
