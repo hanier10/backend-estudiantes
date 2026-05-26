@@ -35,6 +35,8 @@ export class EstudiantesService {
         throw new Error(`No existe el id ${id}`);
       }
 
+      console.log(row);
+
       return row;
     } catch (error) {
       console.log(error);
