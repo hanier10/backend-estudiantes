@@ -40,11 +40,11 @@ export class Estudiante {
 
   //Relations
 
-  @ManyToOne(() => Etnia)
-  @JoinColumn({ name: 'etnia_id', referencedColumnName: 'id' })
-  etnia: Etnia;
+  // @ManyToOne(() => Etnia)
+  // @JoinColumn({ name: 'etnia_id', referencedColumnName: 'id' })
+  // etnia: Etnia;
 
-  @ManyToOne(() => Sexo)
-  @JoinColumn({ name: 'sexo_id', referencedColumnName: 'id' })
-  sexo: Sexo;
+  // @ManyToOne(() => Sexo)
+  // @JoinColumn({ name: 'sexo_id', referencedColumnName: 'id' })
+  // sexo: Sexo;
 }
